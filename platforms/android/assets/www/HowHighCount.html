@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="jquery.mobile-1.4.5.min.css" rel="stylesheet" />
+  <script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="jquery.mobile-1.4.5.min.js"></script>
+  <!--   <script src="functions.js"></script>-->
+  <link href="site.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div data-role="page" data-cache="never" id="verifyPage">
+    <div data-role="header">
+      <h1>Give N</h1>
+
+      <h2>How High Can They Count?</h2>
+
+    </div>
+
+    <form action="Verify.html" id="form1">
+
+      <p>Ask the child, "Can you count as high as you can?" and record their highest count.</p>
+
+      <input type="number" id="howHigh" name="howHigh" />
+
+      <input type="button" value="Next" onclick="giveN.saveHowHigh(); $('#form1').submit();" />
+
+    </form>
+    <div data-role="footer" id="footer">
+
+    </div>
+  </div>
+</body>
+
+</html>

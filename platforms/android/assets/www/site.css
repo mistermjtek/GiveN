@@ -1,0 +1,25 @@
+﻿.req
+        {
+            /*font-size:2em;*/
+        }
+
+        .num
+        {
+            color: red;
+            font-weight:bold;
+        }
+
+        .speech
+        {
+            border: 3px solid brown;
+            border-radius: 5px;
+            background-color: #ffdeb0;
+            font-style: italic;
+            padding: 5px;
+        }
+
+.footer
+{
+    font-size:.5em;
+    font-weight:normal;
+}
