@@ -5,26 +5,26 @@
   <title>Give N</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-  <link href="jquery.mobile-1.4.5.min.css" rel="stylesheet" />
-  <link href="site.css" rel="stylesheet" />
+  <link href="css/jquery.mobile-1.4.5.min.css" rel="stylesheet" />
+  <link href="css/site.css" rel="stylesheet" />
   <script type="text/javascript" src="cordova.js"></script>
-  <script type="text/javascript" src="jquery-1.11.3.min.js"></script>
-  <script type="text/javascript" src="jquery.mobile-1.4.5.min.js"></script>
-  <script type="text/javascript" src="functions.js"></script>
-  <script type="text/javascript" src="Trial.js"></script>
+  <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+  <script type="text/javascript" src="js/functions.js"></script>
+  <script type="text/javascript" src="js/Trial.js"></script>
 </head>
 
 <body>
   <!--<h1>Welcome to Give N</h1>-->
 
   <div data-role="page" data-cache="never" id="welcomePage">
-    <img src="titleimg.jpg" alt="Give N" title="Give N" />
+    <img src="res/titleimg.jpg" alt="Give N" title="Give N" />
     <div data-role="header">
       <h1>Give N</h1>
     </div>
 
     <div role="main" class="ui-content">
-      <form action="default.html"
+      <form action="partials/default.html"
       onsubmit="if(document.getElementById('agree').checked){
         return giveN.storeResearcherInfo(this.researcherName.value, this.researcherEmail.value, this.zip.value);
       } else {

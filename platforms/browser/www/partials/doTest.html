@@ -4,23 +4,16 @@
 <head>
     <title>Trial</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="jquery.mobile-1.4.5.min.css" rel="stylesheet" />
-    <script type="text/javascript" src="jquery-1.11.3.min.js"></script>
-    <script type="text/javascript" src="jquery.mobile-1.4.5.min.js"></script>
-
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-
 
 </head>
 
 <body>
 
-
-
     <div data-role="page" data-cache="never" id="doTestPage">
         <div data-role="header">
             <h1>Give N</h1>
-            
+
             <p class="speech">
                 "Can you put <span class="num">{0}</span> on the plate?<br />
                 Put <span class="num">{0}</span> on the plate, and tell me when you’re all done. (repeat)"
@@ -28,24 +21,18 @@
             <p>
                 When child tells you that they are done:
             </p>
-             <p class="speech">
-                    "Is that <span class="num">{0}</span>?<br />
-                    Can you count and make sure?<br />
-                    Is that <span class="num">{0}</span>?"<br />
-                </p>
+            <p class="speech">
+                "Is that <span class="num">{0}</span>?<br />
+                Can you count and make sure?<br />
+                Is that <span class="num">{0}</span>?"<br />
+            </p>
             <h2>Trial <span id="trialNum">{0}</span>:</h2>
 
         </div>
 
         <div role="main" class="ui-content">
 
-
-
-            <form action="HowHighCount.html" name="form1" id="form1">
-                
-               
-
-               
+            <form action="partials/howHighCount.html" name="form1" id="form1">
 
                 <div class="req">
                     <div id="subjectRequest">Please ask your test subject for <span class="num">{0}</span> items</div>
@@ -55,20 +42,15 @@
                         Final amount given (if child is prompted to check response)
                         <input type="number" value="" name="subjectResponseValue2" id="subjectResponseValue2" size="5">
 
-
-
                         <input type="button" value="Next" onclick="next()" />
                     </div>
                 </div>
                 <br />
 
-
-
                 <br />
                 <br />
                 <input type="button" value="Stop test" onclick="giveN.abortTest();" />
-                If the test is stopped, partial data can
-be emailed, and will be marked as such.
+                If the test is stopped, partial data can be emailed, and will be marked as such.
 
                 <table border="1" cellpadding="5" cellspacing="4" id="dataTable">
                     <thead>
@@ -79,8 +61,6 @@ be emailed, and will be marked as such.
                             <td>Given Finally</td>
                         </tr>
                     </thead>
-
-
                 </table>
 
             </form>
