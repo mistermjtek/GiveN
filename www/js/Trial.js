@@ -11,10 +11,10 @@ var KL = 20;
 //This number can be changed if the experimenter wants to start at a number
 //other then 3. In the app, we would like the experimenter to have a choice
 //to either set it themselves or have the app calculate a recommendation based on the
-//child's age (calculated from date of birth and current date). 
+//child's age (calculated from date of birth and current date).
 StartNumber = 3;
 //Highest Test Number is the highest number the experimenter wants to query.
-//This should be able to be changed under a settings menu. 
+//This should be able to be changed under a settings menu.
 HighestTestNumber = 8;
 
 function zeros(dimension1, dimension2) {
@@ -61,17 +61,17 @@ function GiveN(SubjID, KL, Ans, AskNumber, Params, KnowerLevelResult, type, nonT
     //Current Trial #. Starts at 1
     //Params.CurrTrial = 1;
     //dummy variable to verify that a new subject code has been entered and we
-    //aren't over writing previous data. 
+    //aren't over writing previous data.
     ValidName = 0;
     //Assigns dummy values to 3 variables used in the logic in the main part of
-    //the program. 
+    //the program.
     HoldAskNumber = 100;
     skipflag = 0;
     //   KL=20;
 
     //Checks folder for data files with the same name as SubjID.mat. If there is
     //a previous file, asks if it is a continuation. If not, queries for a new
-    //name. Otherwise, program continues on. 
+    //name. Otherwise, program continues on.
     /*    while (ValidName==0){
             DataFileName=['GANData/' SubjID '.mat'];
             if ~exist(DataFileName,'file')
@@ -98,7 +98,7 @@ function GiveN(SubjID, KL, Ans, AskNumber, Params, KnowerLevelResult, type, nonT
 
 
     //Ask Number is variable that changes for each trial. It is the number the
-    //experimenter should ask the child about. 
+    //experimenter should ask the child about.
     //    AskNumber=StartNumber;
 
 
@@ -146,12 +146,12 @@ function GiveN(SubjID, KL, Ans, AskNumber, Params, KnowerLevelResult, type, nonT
     //This loops goes through each number from 1 to the highest number
     //tested to determine whether there is sufficient evidence that the
     //child knows or does not know N. If child knows N and does not know
-    //N-1, Knower Level is determined. 
+    //N-1, Knower Level is determined.
     for (var n = 1; n <= HighestTestNumber; n++) {
         NCorrect = 0;//sets/resets counter NCorrect to 0. NCorrect counts how many inquiries child as gotten correct when asked for N thus far.
         NInc = 0; //sets/resets NInc to 0. NInc counts how many inquires for N a child has gotten incorrect
         NFalse = 0;// sets/resets NFalse to 0. NFalse counts how many times child has responded N to trials that are not asking for N. E.g. if N=3, how many times a child gave 3 when asked for 1, 2, 4, 5, etc.
-        NTrials = 0; // Total number of trials child has been asked for N. Is redundant because Ntrials=Ncorrect+Ninc. But helps for understanding purposes. 
+        NTrials = 0; // Total number of trials child has been asked for N. Is redundant because Ntrials=Ncorrect+Ninc. But helps for understanding purposes.
 
         // Params.Trials is a 2 column matrix that creates a new row for
         // each trial.Column 1 is set to Ask Number (see above) and column 2
@@ -177,7 +177,7 @@ function GiveN(SubjID, KL, Ans, AskNumber, Params, KnowerLevelResult, type, nonT
         }
 
         //This section of the code determines whether or not there is
-        //sufficient evidence that a child knows or does not know N. 
+        //sufficient evidence that a child knows or does not know N.
 
         // If child has at least two trials @ N and the number correct is
         // greater then or equal to 2/3rds, the child may know N.
@@ -188,13 +188,15 @@ function GiveN(SubjID, KL, Ans, AskNumber, Params, KnowerLevelResult, type, nonT
             if (NCorrect / (NFalse + NCorrect) < (2 / 3)) {
                 KLMatrix[n] = -1;
                 //OTherwise, child does know N and the Nth Element of KL matrix
-                //is set to 1. 
+                //is set to 1.
             } else {
                 KLMatrix[n] = 1;
             }
         } else if (NTrials > 2 && NCorrect / NTrials < 2 / 3) {
             KLMatrix[n] = -1;
         } else if (NTrials == 2 && NCorrect / NTrials == 0) {
+            KLMatrix[n] = -1;
+        } else if (NFalse > 1 && NCorrect / (NFalse + NCorrect) < (2 / 3)) {
             KLMatrix[n] = -1;
         }
         //if child passes criteria for Highest Test Number, sets KL to this.
@@ -203,7 +205,7 @@ function GiveN(SubjID, KL, Ans, AskNumber, Params, KnowerLevelResult, type, nonT
             Params.KL = HighestTestNumber;
             break
             //if child passes criteria for N and fails criteria for N+1, then
-            //sets KL to n. 
+            //sets KL to n.
         } else if (KLMatrix[n] == 1 && KLMatrix[n + 1] == -1) {
             KL = n
             Params.KL = n;
@@ -216,9 +218,9 @@ function GiveN(SubjID, KL, Ans, AskNumber, Params, KnowerLevelResult, type, nonT
                 Params.KL = 0;
                 break
                 //if child is failing at n and succeeding at n-1, sets KL to
-                //n-1 . This code is probably redundant with 
+                //n-1 . This code is probably redundant with
                 //elseif KLMatrix(n,1)==1 && KLMatrix(n+1,1)==-1...... above.
-                //and can probably be removed. 
+                //and can probably be removed.
             } else if (KLMatrix[n - 1] == 1) {
                 KL = n - 1
                 Params.KL = n - 1;
@@ -226,7 +228,15 @@ function GiveN(SubjID, KL, Ans, AskNumber, Params, KnowerLevelResult, type, nonT
             }
         }
     }
-    
+
+    if (KL < 20) {
+      for (var j = 1; j <= HighestTestNumber; j++) {
+        if (KLMatrix[j] == -1) {
+          KL = 20;
+        }
+      }
+    }
+
 
     //If knower level was not determined during the above loop, continue...
     if (KL == 20  || type==='nontitrated') {
@@ -235,7 +245,7 @@ function GiveN(SubjID, KL, Ans, AskNumber, Params, KnowerLevelResult, type, nonT
         //if child gave correct answer on last trial...
         if (Ans == AskNumber) {
             //And if the asknumber on previous trial is not equal to the Highest
-            //test number, increase by 1. 
+            //test number, increase by 1.
             if (AskNumber != HighestTestNumber) {
                 AskNumber = AskNumber + 1;
             }
@@ -255,7 +265,7 @@ function GiveN(SubjID, KL, Ans, AskNumber, Params, KnowerLevelResult, type, nonT
             //also for requests for N.For example, if a child always gives 2 for 2
             //and 3, in order for us to find out if he is a one knower, we have to
             //also ask for 1 but the above logic will never get us there without
-            //this bit. 
+            //this bit.
             if (KLMatrix[AskNumber] == -1) {
                 AskNumber = AskNumber - 1;
             } else {
@@ -272,7 +282,7 @@ function GiveN(SubjID, KL, Ans, AskNumber, Params, KnowerLevelResult, type, nonT
             if (AskNumber == HighestTestNumber) {
                 AskNumber = HighestTestNumber - 1;
             } else {
-                // Otherwise, ask for one higher than the max tested so far. 
+                // Otherwise, ask for one higher than the max tested so far.
                 AskNumberVector = get(Params.Trials, ':', 1);
 
                 if (max(AskNumberVector) == HighestTestNumber) {
@@ -294,7 +304,7 @@ function GiveN(SubjID, KL, Ans, AskNumber, Params, KnowerLevelResult, type, nonT
             //KL will have been set above
         }
     }
-    
+
 
 
     if ((type ==='nontitrated' && (Params.CurrTrial-1)==nonTitratedSet.length) || type ==='titrated'){
@@ -312,7 +322,7 @@ function GiveN(SubjID, KL, Ans, AskNumber, Params, KnowerLevelResult, type, nonT
         KnowerLevelResult.KL = KL;
         KnowerLevelResult.ie_KL = ie_KL;
 
-        
+
     }
 
     return AskNumber;
@@ -334,12 +344,12 @@ Params.KL
 //    //This loops goes through each number from 1 to the highest number
 //    //tested to determine whether there is sufficient evidence that the
 //    //child knows or does not know N. If child knows N and does not know
-//    //N-1, Knower Level is determined. 
+//    //N-1, Knower Level is determined.
 //    for (var n = 1; n <= HighestTestNumber; n++) {
 //        NCorrect = 0;//sets/resets counter NCorrect to 0. NCorrect counts how many inquiries child as gotten correct when asked for N thus far.
 //        NInc = 0; //sets/resets NInc to 0. NInc counts how many inquires for N a child has gotten incorrect
 //        NFalse = 0;// sets/resets NFalse to 0. NFalse counts how many times child has responded N to trials that are not asking for N. E.g. if N=3, how many times a child gave 3 when asked for 1, 2, 4, 5, etc.
-//        NTrials = 0; // Total number of trials child has been asked for N. Is redundant because Ntrials=Ncorrect+Ninc. But helps for understanding purposes. 
+//        NTrials = 0; // Total number of trials child has been asked for N. Is redundant because Ntrials=Ncorrect+Ninc. But helps for understanding purposes.
 
 //        // Params.Trials is a 2 column matrix that creates a new row for
 //        // each trial.Column 1 is set to Ask Number (see above) and column 2
@@ -365,7 +375,7 @@ Params.KL
 //        }
 
 //        //This section of the code determines whether or not there is
-//        //sufficient evidence that a child knows or does not know N. 
+//        //sufficient evidence that a child knows or does not know N.
 
 //        // If child has at least two trials @ N and the number correct is
 //        // greater then or equal to 2/3rds, the child may know N.
@@ -376,7 +386,7 @@ Params.KL
 //            if (NCorrect / (NFalse + NCorrect) < (2 / 3)) {
 //                KLMatrix[n] = -1;
 //                //OTherwise, child does know N and the Nth Element of KL matrix
-//                //is set to 1. 
+//                //is set to 1.
 //            } else {
 //                KLMatrix[n] = 1;
 //            }
@@ -391,7 +401,7 @@ Params.KL
 //            Params.KL = HighestTestNumber;
 //            break
 //            //if child passes criteria for N and fails criteria for N+1, then
-//            //sets KL to n. 
+//            //sets KL to n.
 //        } else if (KLMatrix[n] == 1 && KLMatrix[n + 1] == -1) {
 //            KL = n
 //            Params.KL = n;
@@ -404,9 +414,9 @@ Params.KL
 //                Params.KL = 0;
 //                break
 //                //if child is failing at n and succeeding at n-1, sets KL to
-//                //n-1 . This code is probably redundant with 
+//                //n-1 . This code is probably redundant with
 //                //elseif KLMatrix(n,1)==1 && KLMatrix(n+1,1)==-1...... above.
-//                //and can probably be removed. 
+//                //and can probably be removed.
 //            } else if (KLMatrix[n - 1] == 1) {
 //                KL = n - 1
 //                Params.KL = n - 1;
